@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./JobCard.css";
 import UserContext from "../auth/UserContext";
 
@@ -14,16 +14,22 @@ import UserContext from "../auth/UserContext";
 function JobCard({ id, title, salary, equity, companyName }) {
   console.debug("JobCard");
 
-  const { currentUser, hasAppliedToJob, applyToJob } = useContext(UserContext);
+  const { hasAppliedToJob, applyToJob } = useContext(UserContext);
   const [applied, setApplied] = useState();
+  useEffect(
+    function updateAppliedStatus() {
+      console.debug("JobCard useEffect updateAppliedStatus", "id=", id);
 
-
+      setApplied(hasAppliedToJob(id));
+    },
+    [id, hasAppliedToJob]
+  );
 
   /** Apply for a job */
   async function handleApply(evt) {
     evt.preventDefault();
     if (hasAppliedToJob(id)) return;
-    applyToJob(currentUser.username, id);
+    applyToJob(id);
     setApplied(true);
   }
 

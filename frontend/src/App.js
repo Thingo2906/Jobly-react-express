@@ -95,9 +95,9 @@ function App() {
     return applicationIds.has(id)
   }
 
-  async function applyToJob(username, id) {
+  async function applyToJob(id) {
     if (hasAppliedToJob(id)) return;
-    JoblyApi.applyJob(username, id);
+    JoblyApi.applyJob(currentUser.username, id);
     setApplicationIds(new Set([...applicationIds, id]));
   }
 
